@@ -1,0 +1,32 @@
+clientID,lastNameOrCompany,firstname,email,mobile,clientTypeCode,deleted,clientCode
+1,Default client,null,null,null,0,false,1
+2,Klients ar diennakts abonementu,null,null,null,0,false,2
+3,Klients ar abonementu darba laikā,null,null,null,0,false,3
+4,Dubovsky,Dmitry,mitja@bis.lv,null,0,false,1
+5,Berzabinds,Janis,janis.berzabinds@gmail.com,null,0,false,1
+6,Limited,Klients,null,,0,false,1
+7,limited,client 1,null,,0,false,1
+8,p,i,Igor.Pokataev@biss.lv,null,0,false,1
+9,Admin ter. piegādātājs nr.1,null,null,null,1,false,4
+10,Piegāde,Dzelzceļa,null,null,1,false,5
+11,Piegāde,Pārtikas,null,null,0,false,1
+12,Blumenaus,Izrails,blu@biss.lv,29207301,0,false,1
+13,Berzabinds,Janis,berzabinds@gmail.com,null,0,false,1
+14,P,I,igor.pokataev@gmail.com,null,0,false,1
+15,Kurcers,Dmitrijs,dkurcer@gmail.com,null,0,false,1
+16,Wash and Drive,Dzintars,dzintars.orskis@washanddrive.lv,+37129188665,0,false,1
+17,Malahovs,Aleksandrs,aleksandrs.malahovs@biss.lv,null,0,false,1
+20,Test user,null,user@example.com,null,0,false,1
+21,Visitor_120324101700,null,null,null,0,false,6
+22,VisitorUpdated1,null,null,null,0,false,1
+32,Senger,China,chinasenger@mailinator.com,null,0,false,1
+33,Trantow,Guillermo,guillermotrantow@mailinator.com,null,0,false,1
+35,Littel,Meagan,meaganlittel@mailinator.com,null,0,false,1
+36,Schowalter,Florentino,florentinoschowalter@mailinator.com,null,0,false,1
+38,Kuhlman,Leora,leorakuhlman@mailinator.com,null,0,false,1
+43,Veum,Ligia,ligiaveum@mailinator.com,null,0,false,1
+45,Sipes,Lorean,loreansipes@mailinator.com,null,0,false,1
+53,Predovic,Chuck,chuckpredovic@mailinator.com,null,0,false,1
+59,Feest,Blythe,blythefeest@mailinator.com,null,0,false,1
+60,Cassin,Michaela,michaelacassin@mailinator.com,null,0,false,1
+63,Lindgren,Regan,reganlindgren@mailinator.com,null,0,false,1

@@ -19,15 +19,15 @@ import java.util.function.Function;
 public class Driver {
 
 
-
     public static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
     public static ThreadLocal<String> browsers = new ThreadLocal<>();
 
     public static WebDriver getDriver(){
         System.setProperty("webdriver.http.factory", "jdk-http-client");
+        String browser = System.getenv("BROWSER_OPTION");
 
-        if (browsers.get() == null){
-            browsers.set("chrome");
+        if (browsers.get() == null) {
+            browsers.set(browser != null ? browser : "chrome"); // Default to "chrome" if not specified
         }
         if(driver.get() == null){
             switch(browsers.get()){
@@ -60,9 +60,9 @@ public class Driver {
             }
 
         }
-            driver.get().manage().window().maximize();
-            driver.get().manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
-            return driver.get();
+        driver.get().manage().window().maximize();
+        driver.get().manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
+        return driver.get();
 
 
     }

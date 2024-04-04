@@ -2,6 +2,7 @@ package stepDefinitions.ApiStepDefinitions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -17,6 +18,8 @@ import utilities.CSVWriterforAllClients;
 import utilities.ConfigReader;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static stepDefinitions.Hooks.spec;
@@ -160,8 +163,63 @@ public class ClientsStepDefinitions {
 
         String filePath = "AllActiveClients.csv";
 
-        // Call the writeClientsToCSV method to write the response body to CSV
         CSVWriterforAllActiveClients.writeActiveClientsToCSV(allActiveClientsGETResponsePojo, filePath);
+    }
+
+    @Given("User has a valid API endpoint for client creation")
+    public void user_has_valid_api_endpoint_for_client_creation() {
+        spec.pathParams("1","api","2","v1","3","Clients");
+    }
+    @Given("User enters expected data for client creation with the following details:")
+    public void user_enters_expected_data_for_client_creation(DataTable dataTable) {
+
+        List<Map<String, String>> data = dataTable.asMaps(String.class, String.class);
+        if (!data.isEmpty()) {
+            String firstName = data.get(0).get("firstName");
+            String lastName = data.get(0).get("lastName");
+            String email = data.get(0).get("email");
+            String persCode = data.get(0).get("persCode");
+            String city = data.get(0).get("city");
+
+            System.out.println("First Name: " + firstName);
+            System.out.println("Last Name: " + lastName);
+            System.out.println("Email: " + email);
+            System.out.println("Personal Code: " + persCode);
+            System.out.println("City: " + city);
+
+            root.setFirstName(firstName);
+            root.setLastNameOrCompany(lastName);
+            root.setEmail(email);
+            root.setPersCodeOrRegNumber(persCode);
+            root.setCity(city);
+        } else {
+            System.out.println("No data available for client creation.");
+        }
+
+    }
+
+    @When("User sends a POST request to client creation endpoint")
+    public void user_sends_post_request_to_client_creation_endpoint() {
+        RestAssured.defaultParser = Parser.JSON;
+        response = given().relaxedHTTPSValidation().spec(spec)
+                .contentType(ContentType.JSON)
+                .body(root)
+                .when()
+                .post("/{1}/{2}/{3}");
+        response.prettyPrint();
+    }
+
+    @Then("the response should contain the details of the newly created client")
+    public void verify_response_details(DataTable dataTable) throws IOException {
+        ClientCreationResponsePojo actualResponse = obj.readValue(response.asString(), ClientCreationResponsePojo.class);
+        newClientId = actualResponse.getClientID();
+        System.out.println("newClientID: " + newClientId);
+
+        List<Map<String, String>> expectedData = dataTable.asMaps(String.class, String.class);
+        Assert.assertEquals(expectedData.get(0).get("firstName"), actualResponse.getFirstName());
+        Assert.assertEquals(expectedData.get(0).get("lastName"), actualResponse.getLastNameOrCompany());
+        Assert.assertEquals(expectedData.get(0).get("email"), actualResponse.getEmail());
+        Assert.assertEquals(expectedData.get(0).get("persCode"), actualResponse.getPersCodeOrRegNumber());
     }
 
 }

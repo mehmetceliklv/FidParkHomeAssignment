@@ -166,9 +166,9 @@ public class ClientsStepDefinitions {
         CSVWriterforAllActiveClients.writeActiveClientsToCSV(allActiveClientsGETResponsePojo, filePath);
     }
 
-    @Given("User has a valid API endpoint for client creation")
-    public void user_has_valid_api_endpoint_for_client_creation() {
-        spec.pathParams("1","api","2","v1","3","Clients");
+    @Given("User sets path params {string}")
+    public void user_sets_path_params(String object) {
+        spec.pathParams("1","api","2","v1","3",object);
     }
     @Given("User enters expected data for client creation with the following details:")
     public void user_enters_expected_data_for_client_creation(DataTable dataTable) {
@@ -198,8 +198,8 @@ public class ClientsStepDefinitions {
 
     }
 
-    @When("User sends a POST request to client creation endpoint")
-    public void user_sends_post_request_to_client_creation_endpoint() {
+    @When("User sends a POST request")
+    public void user_sends_post_request() {
         RestAssured.defaultParser = Parser.JSON;
         response = given().relaxedHTTPSValidation().spec(spec)
                 .contentType(ContentType.JSON)
@@ -220,6 +220,50 @@ public class ClientsStepDefinitions {
         Assert.assertEquals(expectedData.get(0).get("lastName"), actualResponse.getLastNameOrCompany());
         Assert.assertEquals(expectedData.get(0).get("email"), actualResponse.getEmail());
         Assert.assertEquals(expectedData.get(0).get("persCode"), actualResponse.getPersCodeOrRegNumber());
+    }
+
+
+    @Given("User sets path params {string}{string}")
+    public void user_sets_path_params(String object,String key) {
+        spec.pathParams("1","api","2","v1","3",object,"4",key);
+    }
+    @When("User enters expected data for client update with the following details:")
+    public void user_enters_expected_data_for_client_update_with_the_following_details(io.cucumber.datatable.DataTable dataTable) {
+        List<Map<String, String>> data = dataTable.asMaps(String.class, String.class);
+        if (!data.isEmpty()) {
+            int key = Integer.parseInt(data.get(0).get("key"));
+            String firstName = data.get(0).get("firstName");
+            String lastName = data.get(0).get("lastName");
+            String email = data.get(0).get("email");
+            String persCode = data.get(0).get("persCode");
+            String city = data.get(0).get("city");
+
+            System.out.println("Key: " + key);
+            System.out.println("First Name: " + firstName);
+            System.out.println("Last Name: " + lastName);
+            System.out.println("Email: " + email);
+            System.out.println("Personal Code: " + persCode);
+            System.out.println("City: " + city);
+
+            root.setClientID(key);
+            root.setFirstName(firstName);
+            root.setLastNameOrCompany(lastName);
+            root.setEmail(email);
+            root.setPersCodeOrRegNumber(persCode);
+            root.setCity(city);
+        } else {
+            System.out.println("No data available for client creation.");
+        }
+    }
+    @When("User sends a PUT request")
+    public void user_sends_a_put_request_to() {
+
+        RestAssured.defaultParser = Parser.JSON;
+        response =given().relaxedHTTPSValidation().spec(spec)
+                .contentType(ContentType.JSON)
+                .body(root).when()
+                .put("/{1}/{2}/{3}/{4}");
+        response.prettyPrint();
     }
 
 }
